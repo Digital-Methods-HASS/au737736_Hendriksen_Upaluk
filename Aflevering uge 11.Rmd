@@ -1,0 +1,99 @@
+---
+title: "Aflevering uge 11"
+output: html_document
+date: "2026-03-13"
+---
+
+```{r setup}
+dir.create("data")
+library(tidyverse)
+
+```
+
+1) It is seperated with semicolons. 
+```{r}
+kings1 <- read.csv("data/Monarker.csv")
+
+kings2 <- read_csv("data/Monarker.csv")
+
+kings3 <- read.csv2("data/Monarker.csv")
+
+kings4 <- read_csv2("data/Monarker.csv")
+```
+
+Answer 1: The functions with underscores are the tidyverse functions. 
+
+
+```{r}
+class(kings2)
+
+class(kings4)
+```
+Answer 1.2: It gives you information that there is metadata, because it shows "tbl" and "dataframe"
+
+```{r}
+glimpse(kings1)
+
+glimpse(kings2)
+
+glimpse(kings3)
+
+glimpse(kings4)
+
+
+```
+Answer 1.3: I used the glimpse function for this because it returns the number of columns and rows of tibble, the names and class of each column, and previews as many values will fit on the screen. And it did run number 1 and 2, but not properly. And it ran number 3 in a wrong way. And it showed that number 4 was the correct function for it. 
+
+
+```{r}
+kings4 <- kings4 %>% 
+  mutate(duration = Reign_End - Reign_start)
+
+
+```
+In this part I have calculated the duration of reign, using the mutate function, and specified that it was from the kings4 csv column. 
+
+```{r}
+kings4 %>% 
+  summarise(duration_of_dk_kings = mean(duration, na.rm = TRUE))
+
+```
+In this part i calculated the average duration of reigns, using summarize and specified that it was kings4 i wanted to use, and exluded NA from the calculation, and it showed what the average reign was.  
+```{r}
+mean(kings4[[10]], na.rm = TRUE)
+```
+And here I have done the same, but in a shorter and more simple way, again specifying the kings4 column, and saying that it was row 10 I wanted to calculate. 
+
+
+```{r}
+average_duration_of_reign <- mean(kings4[[10]], na.rm = TRUE) 
+
+kings4 %>% 
+  filter(duration > average_duration_of_reign) %>% 
+  count()
+ 
+```
+```{r}
+kings4 %>%
+  arrange(desc(duration))%>%
+  slice(1:3) %>% 
+  mutate(Days = duration * 365)
+
+
+```
+I it on the right side, way out that you can see for how many days, these monarchs have reigned for longer than others. 
+
+```{r}
+kings4 %>% 
+  select(`King/Queen`, duration) %>% 
+  ggplot(aes(x= duration, y= `King/Queen`))+
+  geom_col()
+  coord_flip()
+
+
+```
+
+
+
+
+
